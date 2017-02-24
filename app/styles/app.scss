@@ -15,6 +15,21 @@ $icon-font-path: '../../node_modules/bootstrap-sass/assets/fonts/bootstrap/';
 img {
   max-width: 100%;
 }
+.head-nav {
+  font-family: 'Meddon', cursive;
+  //font-size: 90px;
+  background-color: black;
+  background-size: cover;
+  background-position: center;
+  background-repeat: none;
+  background-image: url('https://images.pexels.com/photos/48726/pexels-photo-48726.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb');
+  color: white;
+  padding: 80px 15px;
+}
+
+.header-title {
+  font-size: 60px;
+}
 
 
 .order-wrapper-full {

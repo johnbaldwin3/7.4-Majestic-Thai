@@ -9,7 +9,8 @@ var models = require('../models/thai_models.js');
 var ThaiMainContainer = React.createClass({
   getInitialState: function(){
     var foodItemCollection = new models.FoodItemCollection();
-    var orderedItemCollection = new models.FoodItemCollection();
+    var orderedItemCollection = new models.CartCollection();
+    orderedItemCollection.fetch();
 
     return {
       foodItemCollection: foodItemCollection,
@@ -19,7 +20,6 @@ var ThaiMainContainer = React.createClass({
   },
   componentWillMount: function() {
     var newFoodCollection = this.state.foodItemCollection;
-
     newFoodCollection.add([
       {popular: true, type: 'appetizer', menuNumber: 1, title:"Crab Nachos", price: 12.99, description:"House made fresh flour and corn chips with olives, tomatoes, diced red onion, fresh picked lump and claw crabmeat, creamy pepperjack fondue and mixed cheeses"},
       {popular: false, type: 'appetizer', menuNumber: 2, title:"Pimento Cheese Fondue", price: 8.99, description:"Hand-cut seasoned potato chips, with our house made pimento Cheese Fondue served warm for dipping"},
@@ -27,30 +27,36 @@ var ThaiMainContainer = React.createClass({
     ]);
 
     this.setState({foodItemCollection: newFoodCollection});
+
+
   },
   handleOrder: function(menuItemToOrder){
     var orderCollection = this.state.orderedItemCollection;
     var orderedItem = menuItemToOrder.toJSON();
-    //console.log('order', orderedItem);
-    //console.log('orders', orderCollection);
-    orderCollection.add(orderedItem);
-    this.setState({orderedItemCollection: orderCollection});
-
-    //this.setState({orderItem: orderedItem});
-    //orders.add(orderedItem);
-    //this.setState({orderedItemCollection: orderedItemCollection});
-    console.log('orderCollect', this.state.orderedItemCollection );
-
+    var self = this;
+    orderCollection.create(orderedItem);
+    var subTotal = orderCollection.subTotal();
+    //console.log('sub',subTotal);
+    this.setState({ subTotal : subTotal });
+    self.forceUpdate();
   },
   deleteOrderItem: function(deletedItem) {
-    console.log('click-delete-contain', deletedItem);
+    var orderCollection = this.state.orderedItemCollection;
+    deletedItem.destroy();
+    this.forceUpdate();
+    var subTotal = orderCollection.subTotal();
+    orderCollection.subTotal();
+    this.setState({ subTotal : subTotal });
+  },
+  handleCheckout: function(completeOrder) {
+    console.log('compOrder', completeOrder);
+
   },
   render: function(){
-        //console.log(this.state.foodItemCollection);
     return(
       <div className="app-wrapper">
       <div className="inner-wrapper">
-        <div className="container-fluid">
+        <div className="container-fluid head-nav">
           <header><h1 className="header-title">Majestic Thai</h1></header>
         </div>
       </div>
@@ -58,17 +64,20 @@ var ThaiMainContainer = React.createClass({
         <div className="col-sm-12">
           <div className="row">
 
-              <ThaiMenuList handleOrder={this.handleOrder} foodItemCollection={this.state.foodItemCollection}/>
+            <ThaiMenuList handleOrder={this.handleOrder} foodItemCollection={this.state.foodItemCollection}/>
 
-            <div className="col-sm-4 your-order-list">
+          <div className="col-sm-4 your-order-list">
 
-              <ThaiOrderForm deleteOrderItem={this.deleteOrderItem} orderedItemCollection={this.state.orderedItemCollection}/>
+            <ThaiOrderForm
+              handleCheckout={this.state.handleCheckout}
+              subTotal={this.state.subTotal}
+              deleteOrderItem={this.deleteOrderItem} orderedItemCollection={this.state.orderedItemCollection}/>
 
-            </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
     )
   }
 
@@ -77,12 +86,6 @@ var ThaiMainContainer = React.createClass({
 var ThaiMenuList = React.createClass({
   propTypes: {
     foodItemCollection: React.PropTypes.instanceOf(Backbone.Collection).isRequired
-  // }
-  // // ,
-  // // handleOrder: function(event){
-  // //     event.preventDefault();
-  // //     console.log('my order $', event.target.value);
-  // //     return (event.target.value);
   },
   render: function(){
     var self = this;
@@ -113,9 +116,6 @@ var ThaiMenuList = React.createClass({
 });
 
 var ThaiOrderForm = React.createClass({
-  // deleteOrderItem: function(){
-  //   return console.log('click-delete-form');
-  // },
   render: function(){
     var self = this;
     var orderFormList = this.props.orderedItemCollection.map(function(order) {
@@ -132,9 +132,10 @@ var ThaiOrderForm = React.createClass({
             </div>
           </td>
           <td className="order-wrap deleter">
-              <button onClick={(e) => {e.preventDefault(); self.props.deleteOrderItem(order);}} className="delete-button"><i className="fa fa-times" aria-hidden="true"></i></button>
+            <button onClick={(e) => {e.preventDefault(); self.props.deleteOrderItem(order);}} className="delete-button">
+              <i className="fa fa-times" aria-hidden="true"></i>
+            </button>
           </td>
-
         </tr>
       )
 
@@ -151,17 +152,16 @@ var ThaiOrderForm = React.createClass({
             </tr>
           </thead>
           <tbody className="">
-
             {orderFormList}
             <tr className="success">
               <td>Subtotal:</td>
-              <td>XXX</td>
+              <td>$ {this.props.subTotal} </td>
               <td> </td>
             </tr>
           </tbody>
         </table>
         <div className="checkout-div">
-          <button className="btn-success btn">Proceed to Checkout</button>
+          <button onClick={(e) => {e.preventDefault(); this.props.handleCheckout();}} className="btn-success btn col-xs-12"><i className="fa fa-shopping-cart" aria-hidden="true"></i> &nbsp; Proceed to Checkout</button>
         </div>
       </div>
     )
