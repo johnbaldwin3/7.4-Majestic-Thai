@@ -31,8 +31,8 @@ var ThaiMainContainer = React.createClass({
   handleOrder: function(menuItemToOrder){
     var orderCollection = this.state.orderedItemCollection;
     var orderedItem = menuItemToOrder.toJSON();
-    console.log('order', orderedItem);
-    console.log('orders', orderCollection);
+    //console.log('order', orderedItem);
+    //console.log('orders', orderCollection);
     orderCollection.add(orderedItem);
     this.setState({orderedItemCollection: orderCollection});
 
@@ -41,6 +41,9 @@ var ThaiMainContainer = React.createClass({
     //this.setState({orderedItemCollection: orderedItemCollection});
     console.log('orderCollect', this.state.orderedItemCollection );
 
+  },
+  deleteOrderItem: function(deletedItem) {
+    console.log('click-delete-contain', deletedItem);
   },
   render: function(){
         //console.log(this.state.foodItemCollection);
@@ -59,7 +62,7 @@ var ThaiMainContainer = React.createClass({
 
             <div className="col-sm-4 your-order-list">
 
-              <ThaiOrderForm orderedItemCollection={this.state.orderedItemCollection}/>
+              <ThaiOrderForm deleteOrderItem={this.deleteOrderItem} orderedItemCollection={this.state.orderedItemCollection}/>
 
             </div>
           </div>
@@ -110,24 +113,56 @@ var ThaiMenuList = React.createClass({
 });
 
 var ThaiOrderForm = React.createClass({
+  // deleteOrderItem: function(){
+  //   return console.log('click-delete-form');
+  // },
   render: function(){
     var self = this;
     var orderFormList = this.props.orderedItemCollection.map(function(order) {
       return (
-        <div key={order.cid} className="order-wrap">
-          <div className="item">
-            {order.get('title')}  $ {order.get('price')}
-          </div>
-        </div>
+        <tr key={order.cid} className="menu-item-cell">
+          <td className="order-wrap itemer">
+            <div className="item">
+              {order.get('title')}
+            </div>
+          </td>
+          <td className="order-wrap pricer">
+            <div className="price">
+              $ {order.get('price')}
+            </div>
+          </td>
+          <td className="order-wrap deleter">
+              <button onClick={(e) => {e.preventDefault(); self.props.deleteOrderItem(order);}} className="delete-button"><i className="fa fa-times" aria-hidden="true"></i></button>
+          </td>
+
+        </tr>
       )
 
     });
     return (
-      <div className="orders">
-        <div className="order">
-          Majestic Thai Order
+      <div className="order-wrapper-full">
+        <table className="orders table table-striped table-hover">
+          <thead className="order">
+            <tr className="table-header">Your Majestic Thai Order:</tr>
+            <tr>
+              <th>Menu Item</th>
+              <th>Price</th>
+              <th> </th>
+            </tr>
+          </thead>
+          <tbody className="">
+
+            {orderFormList}
+            <tr className="success">
+              <td>Subtotal:</td>
+              <td>XXX</td>
+              <td> </td>
+            </tr>
+          </tbody>
+        </table>
+        <div className="checkout-div">
+          <button className="btn-success btn">Proceed to Checkout</button>
         </div>
-          {orderFormList}
       </div>
     )
   }
