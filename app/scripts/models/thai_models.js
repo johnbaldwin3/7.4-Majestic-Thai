@@ -36,7 +36,7 @@ var OrderItem = Backbone.Model.extend({
 
   }
 
-})
+});
 
 var CartCollection = Backbone.Collection.extend({
   model: FoodItemModel,

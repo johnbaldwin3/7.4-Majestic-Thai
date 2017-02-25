@@ -16,7 +16,7 @@ var ThaiMainContainer = React.createClass({
       foodItemCollection: foodItemCollection,
       orderedItemCollection: orderedItemCollection,
       orderItem: new models.FoodItemModel()
-    }
+    };
   },
   componentWillMount: function() {
     var newFoodCollection = this.state.foodItemCollection;
@@ -25,10 +25,8 @@ var ThaiMainContainer = React.createClass({
       {popular: false, type: 'appetizer', menuNumber: 2, title:"Pimento Cheese Fondue", price: 8.99, description:"Hand-cut seasoned potato chips, with our house made pimento Cheese Fondue served warm for dipping"},
       {popular: true, type: 'appetizer', menuNumber: 3, title:"Ahi Spring Rolls", price: 11.99, description:"Fresh Handrolled Spring Rolls with Seared Ahi Tuna, Asian Slaw, and Soy and Wasabi Mayo Sauces"}
     ]);
-
-    this.setState({foodItemCollection: newFoodCollection});
-
-
+    var subTotal = this.state.orderedItemCollection.subTotal();
+    this.setState({foodItemCollection: newFoodCollection, subTotal : subTotal});
   },
   handleOrder: function(menuItemToOrder){
     var orderCollection = this.state.orderedItemCollection;
@@ -49,7 +47,15 @@ var ThaiMainContainer = React.createClass({
     this.setState({ subTotal : subTotal });
   },
   handleCheckout: function(completeOrder) {
-    console.log('compOrder', completeOrder);
+    var orderedStuff = completeOrder.toJSON();
+    var orderItemModel = new models.OrderItem();
+
+    var customerOrderCollection = new models.FoodItemCollection();
+    customerOrderCollection.create(orderedStuff);
+    this.setState({customerOrderCollection: customerOrderCollection});
+    this.forceUpdate();
+    //console.log('compOrder', completeOrder);
+    console.log("am i clicked?", orderedStuff);
 
   },
   render: function(){
@@ -69,7 +75,7 @@ var ThaiMainContainer = React.createClass({
           <div className="col-sm-4 your-order-list">
 
             <ThaiOrderForm
-              handleCheckout={this.state.handleCheckout}
+              handleCheckout={this.handleCheckout}
               subTotal={this.state.subTotal}
               deleteOrderItem={this.deleteOrderItem} orderedItemCollection={this.state.orderedItemCollection}/>
 
@@ -92,11 +98,12 @@ var ThaiMenuList = React.createClass({
       var menuItemList = this.props.foodItemCollection.map(function(menuItem){
         return (
           <div key={menuItem.cid} className="menu-div">
-            <div className="menu-list-title">
+            {/*<div className="menu-list-title">
               <h2 className="menu-type">{menuItem.get('type')}</h2>
-            </div>
+            </div>*/}
             <div className="food-list">
-              <div className="name"><h3><span className="menu-num">{menuItem.get('menuNumber')}. </span><span className="menu-title">{menuItem.get('title')}</span></h3></div>
+              <div className="name"><h3><span className="menu-num">{menuItem.get('menuNumber')}. </span><span className="menu-title">{menuItem.get('title')}</span></h3>
+              </div>
               <div className="description">
                 {menuItem.get('description')}
                 <div className="price">
@@ -142,9 +149,9 @@ var ThaiOrderForm = React.createClass({
     });
     return (
       <div className="order-wrapper-full">
+        <div className="table-header">Your Majestic Thai Order:</div>
         <table className="orders table table-striped table-hover">
           <thead className="order">
-            <tr className="table-header">Your Majestic Thai Order:</tr>
             <tr>
               <th>Menu Item</th>
               <th>Price</th>
@@ -161,7 +168,7 @@ var ThaiOrderForm = React.createClass({
           </tbody>
         </table>
         <div className="checkout-div">
-          <button onClick={(e) => {e.preventDefault(); this.props.handleCheckout();}} className="btn-success btn col-xs-12"><i className="fa fa-shopping-cart" aria-hidden="true"></i> &nbsp; Proceed to Checkout</button>
+          <button onClick={(e) => {e.preventDefault(); self.props.handleCheckout(this.props.orderedItemCollection);}} className="btn-success btn col-xs-12"><i className="fa fa-shopping-cart" aria-hidden="true"></i> &nbsp; Proceed to Checkout</button>
         </div>
       </div>
     )

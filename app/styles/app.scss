@@ -31,12 +31,64 @@ img {
   font-size: 60px;
 }
 
-
+body {
+  background-color: #c7ba9b;
+}
 .order-wrapper-full {
+  box-shadow: 0px 0px 20px 1px #695f34;
+  margin-top: 20px;
+  border: 1px solid lightgrey;
+  background-color: #f0f0f0;
+  border-radius: 5px;
   border: 1px solid lightgrey;
 }
 
 .delete-button {
   border: none;
   background-color: transparent;
+}
+
+.menu-title {
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.description {
+  display: flex;
+  justify-content: space-between;
+}
+
+.food-list {
+  box-shadow: 0px 0px 20px 1px #695f34;
+  background-color: #f0f0f0;
+  padding:10px;
+  border-radius: 5px;
+  margin: 20px 0;
+  border: 1px solid lightgrey;
+}
+
+.table-header {
+  margin-top: 20px;
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+  font-size: 40px;
+  text-align: center;
+}
+
+.btn-success {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0px 5px 20px 1px #695f34;
+}
+
+footer {
+  padding: 30px;
+  background-image: url('https://images.pexels.com/photos/48726/pexels-photo-48726.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb');
+  background-position: bottom;
+  background-repeat: none;
+  background-size: cover;
+  font-family: 'Meddon', cursive;
+  font-size: 20px;
+  color: white;
+
 }
