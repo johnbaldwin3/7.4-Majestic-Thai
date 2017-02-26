@@ -4,15 +4,24 @@ var ReactDOM = require('react-dom');
 
 var ThaiMainContainer = require('./components/thai_comp.jsx').ThaiMainContainer;
 
+var ThaiAdminContainer = require('./components/admin.jsx').ThaiAdminContainer;
+
 var ThaiAppRouter = Backbone.Router.extend({
   routes: {
-    '':'index'
+    '':'index',
+    'admin': 'admin'
   },
   index: function() {
     ReactDOM.render(
       React.createElement(ThaiMainContainer),
       document.getElementById('app')
     );
+  },
+  admin: function() {
+    ReactDOM.render(
+      React.createElement(ThaiAdminContainer),
+      document.getElementById('app')
+    )
   }
 
 

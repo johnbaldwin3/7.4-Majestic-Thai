@@ -1,19 +1,19 @@
 var Backbone = require('backbone');
 Backbone.LocalStorage = require('backbone.localstorage');
+var moment = require('moment');
 
 
 var FoodItemModel = Backbone.Model.extend({
   idAttribute: '_id',
   defaults: {
-    popular: false,
-    type: "edible",
-    menuNumber: 1,
-    title: "Yummy Food Item",
-    price: 10.99,
-    description: "you're gonna love it, we do",
-    qty: 1
+    price: 0,
+    qty: 1,
+    timestamp: ''
 
   },
+  initialize: function(){
+   this.isNew() ? this.set('timestamp', moment().format('LTS')) : this.set('timestamp', this.get('timestamp'));
+},
   total: function() {
     return this.get('price') * this.get('qty');
 
@@ -22,7 +22,7 @@ var FoodItemModel = Backbone.Model.extend({
 
 var FoodItemCollection = Backbone.Collection.extend({
   model: FoodItemModel,
-  url:'https://tiny-lasagna-server.herokuapp.com/collections/jbmenu/',
+  url:'https://tiny-lasagna-server.herokuapp.com/collections/jbmenu3/',
 
 });
 
@@ -37,6 +37,11 @@ var OrderItem = Backbone.Model.extend({
   }
 
 });
+
+var OrderCollection = Backbone.Collection.extend({
+  model: OrderItem,
+  url: 'https://tiny-lasagna-server.herokuapp.com/collections/jb3menu/'
+})
 
 var CartCollection = Backbone.Collection.extend({
   model: FoodItemModel,
@@ -57,5 +62,6 @@ module.exports = {
   FoodItemModel,
   FoodItemCollection,
   OrderItem,
-  CartCollection
+  CartCollection,
+  OrderCollection
 };
