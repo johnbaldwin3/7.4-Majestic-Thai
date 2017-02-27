@@ -9,22 +9,21 @@ var guestOrderCollection = new models.FoodItemCollection();
 
 var ThaiAdminContainer = React.createClass({
   getInitialState: function() {
-    //console.log('tmc', ThaiMainContainer.customerOrderCollection);
     var self = this;
+    var orders = new models.OrderCollection();
 
-    var orders = new models.FoodItemCollection();
     orders.fetch().then(function(food){
       self.setState({collection: orders});
     });
 
-    guestOrderCollection.fetch();
+    console.log('orders', orders );
     return {
       collection: orders
     };
-    console.log('ga', guestOrderCollection );
+
   },
   componentWillMount: function() {
-    console.log('tsc', this.state.collection);
+    //console.log('tsc', this.state.collection);
   //  console.log('state of gOC' ,this.state.guestOrderCollection);
   //  var guestOrders = this.state.guestOrderCollection;
   // //  console.log('gOrders', guestOrders);
@@ -57,7 +56,7 @@ var ThaiAdminContainer = React.createClass({
           </td>
           <td className="order-wrap pricer">
             <div className="price">
-              $ {order.get('price').toFixed(2)}
+              $ {order.get('price')}
             </div>
           </td>
           <td className="order-wrap deleter">
@@ -90,7 +89,7 @@ var ThaiAdminContainer = React.createClass({
           </tbody>
         </table>
         <div className="checkout-div">
-            <button type="button" className="btn-success btn col-xs-12" data-toggle="modal" data-target=".bs-example-modal-lg "><i className="fa fa-shopping-cart" aria-hidden="true"></i> &nbsp; Proceed to Checkout</button>
+            <button type="button" className="btn-danger btn col-xs-12" data-toggle="modal" data-target=".bs-example-modal-lg ">Order Finished</button>
           </div>
 
 
