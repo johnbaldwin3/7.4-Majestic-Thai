@@ -11,12 +11,12 @@ var ThaiAdminContainer = React.createClass({
   getInitialState: function() {
     var self = this;
     var orders = new models.OrderCollection();
-
-    orders.fetch().then(function(food){
-      self.setState({collection: orders});
+    var orderModels = orders.models;
+    orders.fetch().done(function(food){
+      self.setState({collection: orders.models});
     });
 
-    console.log('orders', orders );
+    console.log('orders', orders.models);
     return {
       collection: orders
     };

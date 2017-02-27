@@ -80,7 +80,7 @@ var ThaiMainContainer = React.createClass({
     this.forceUpdate();
     this.state.orderedItemCollection.reset([]);
     this.state.subTotal = 0.00;
-    console.log(customerOrderCollection, 'COC');
+    //console.log(customerOrderCollection, 'COC');
   },
   subOrderButton: function(event) {
     var customerOrderCollection = this.state.orderedItemCollection;
