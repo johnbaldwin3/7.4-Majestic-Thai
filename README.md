@@ -4,4 +4,4 @@ Using React, Backbone, JavaScript, Sass, Bootstrap - this assignment was given a
 
 Using a Backbone router, models, and collections coupled with React.js - Majestic Thai is an on the go e-commerce site ready for business.
 
-![alt tag](https://github.com/johnbaldwin3/7.4-Majestic-Thai/blob/master/images/majesticthai.png)
+![alt tag](https://github.com/johnbaldwin3/7.4-Majestic-Thai/blob/master/app/images/majesticthai.png)
