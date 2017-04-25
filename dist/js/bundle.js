@@ -13,9 +13,9 @@ var ThaiAdminContainer = React.createClass({displayName: "ThaiAdminContainer",
   getInitialState: function() {
     var self = this;
     var orders = new models.OrderCollection();
-    var orderModels = orders.models;
+    // var orderModels = orders.models;
     orders.fetch().done(function(food){
-      self.setState({collection: orders.models});
+      self.setState({collection: orders});
     });
 
     console.log('orders', orders.models);
@@ -49,6 +49,7 @@ var ThaiAdminContainer = React.createClass({displayName: "ThaiAdminContainer",
   render: function(){
     var self = this;
     var orderFormList = this.state.collection.map(function(order) {
+      console.log(order);
       return (
         React.createElement("tr", {key: order.cid, className: "menu-item-cell"}, 
           React.createElement("td", {className: "order-wrap itemer"}, 
@@ -70,6 +71,7 @@ var ThaiAdminContainer = React.createClass({displayName: "ThaiAdminContainer",
       )
 
     });
+    console.log(orderFormList);
     return (
       React.createElement("div", {className: "order-wrapper-full"}, 
         React.createElement("div", {className: "table-header"}, "Your Majestic Thai Order:"), 
@@ -199,7 +201,7 @@ var ThaiMainContainer = React.createClass({displayName: "ThaiMainContainer",
     this.forceUpdate();
     this.state.orderedItemCollection.reset([]);
     this.state.subTotal = 0.00;
-    //console.log(customerOrderCollection, 'COC');
+    console.log('customerordercollection', customerOrderCollection);
   },
   subOrderButton: function(event) {
     var customerOrderCollection = this.state.orderedItemCollection;
@@ -474,7 +476,7 @@ var OrderItem = Backbone.Model.extend({
 
 var OrderCollection = Backbone.Collection.extend({
   model: OrderItem,
-  url: 'https://tiny-lasagna-server.herokuapp.com/collections/jb3menu/'
+  url: 'https://tiny-lasagna-server.herokuapp.com/collections/jb33menu/'
 })
 
 var CartCollection = Backbone.Collection.extend({

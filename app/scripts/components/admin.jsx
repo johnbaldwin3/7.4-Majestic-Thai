@@ -11,9 +11,9 @@ var ThaiAdminContainer = React.createClass({
   getInitialState: function() {
     var self = this;
     var orders = new models.OrderCollection();
-    var orderModels = orders.models;
+    // var orderModels = orders.models;
     orders.fetch().done(function(food){
-      self.setState({collection: orders.models});
+      self.setState({collection: orders});
     });
 
     console.log('orders', orders.models);
@@ -47,6 +47,7 @@ var ThaiAdminContainer = React.createClass({
   render: function(){
     var self = this;
     var orderFormList = this.state.collection.map(function(order) {
+      console.log(order);
       return (
         <tr key={order.cid} className="menu-item-cell">
           <td className="order-wrap itemer">
@@ -68,6 +69,7 @@ var ThaiAdminContainer = React.createClass({
       )
 
     });
+    console.log(orderFormList);
     return (
       <div className="order-wrapper-full">
         <div className="table-header">Your Majestic Thai Order:</div>

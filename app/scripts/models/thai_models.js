@@ -40,7 +40,7 @@ var OrderItem = Backbone.Model.extend({
 
 var OrderCollection = Backbone.Collection.extend({
   model: OrderItem,
-  url: 'https://tiny-lasagna-server.herokuapp.com/collections/jb3menu/'
+  url: 'https://tiny-lasagna-server.herokuapp.com/collections/jb33menu/'
 })
 
 var CartCollection = Backbone.Collection.extend({
